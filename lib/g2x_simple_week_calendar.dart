@@ -1,14 +1,19 @@
 library g2x_week_calendar;
 import 'package:flutter/material.dart';
+import 'package:g2x_week_calendar/Util.dart';
+
+typedef void DateCallback(DateTime val);
 
 class G2xSimpleWeekCalendar extends StatefulWidget {
   G2xSimpleWeekCalendar(
     this.currentDate,
-    {this.strWeekDays = const ["Dom","Seg","Ter","Qua","Qui","Sex","Sab"], this.format = "dd/MM/yyyy"}
+    {this.strWeekDays = const ["Dom","Seg","Ter","Qua","Qui","Sex","Sab"],
+    this.format = "dd/MM/yyyy",this.dateCallback}
   );
   DateTime currentDate;
   final List<String> strWeekDays;
   final String format;
+  final DateCallback dateCallback;
   @override
   _G2xSimpleWeekCalendarState createState() => _G2xSimpleWeekCalendarState();
 }
@@ -17,37 +22,21 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
   var weekDays = <int>[];
   var selectedIndex = 0;
 
-  DateTime _getFirstDateOfWeek(DateTime date){
-    return date.weekday == 7 ? date : date.add(new Duration(days: -date.weekday));
-  }
-
-  List<int> _getDaysOfWeek(){
-    var firstDay = _getFirstDateOfWeek(widget.currentDate);
-    var days = <int>[];
-    for (var i = 0; i < 7; i++) {
-      days.add(firstDay.add(new Duration(days: i)).day);
-    }
-    return days;
-  }
-
   _setSelectedDate(int index){
     setState(() {
-       selectedIndex = index;
-       widget.currentDate = _getFirstDateOfWeek(widget.currentDate).add(new Duration(days: index));
+      selectedIndex = index;
+      widget.currentDate = MyDateTime.getFirstDateOfWeek(widget.currentDate).add(new Duration(days: index));
+      if(widget.dateCallback != null)
+        widget.dateCallback(widget.currentDate);
     });
   }
 
   _altertWeek(int days){
     setState(() {
-       widget.currentDate = widget.currentDate.add(new Duration(days: days));
+      widget.currentDate = widget.currentDate.add(new Duration(days: days));
+      if(widget.dateCallback != null)
+        widget.dateCallback(widget.currentDate);
     });
-  }
-
-  String _formatDate(DateTime date){
-    var str = widget.format.replaceAll("dd", date.day.toString());
-    str = str.replaceAll("MM", date.month.toString());
-    str = str.replaceAll("yyyy", date.year.toString());
-    return str;
   }
 
   @override
@@ -58,7 +47,7 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    weekDays = _getDaysOfWeek();
+    weekDays = MyDateTime.getDaysOfWeek(widget.currentDate);
 
     var defaultTextStyle = new TextStyle(
 
@@ -77,7 +66,7 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
               onTap: ()=> _altertWeek(-7),
               child: new Icon(Icons.arrow_left),
             ),
-            new Text(_formatDate(widget.currentDate)),
+            new Text(MyDateTime.formatDate(widget.currentDate,format: widget.format)),
             new InkWell(
               onTap: ()=> _altertWeek(7),
               child: new Icon(Icons.arrow_right),
@@ -88,6 +77,7 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: widget.strWeekDays.map((i){
             return new InkWell(
+              
               onTap: ()=> _setSelectedDate(widget.strWeekDays.indexOf(i)),
               child: new Column(
                 children: <Widget>[
@@ -102,8 +92,6 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
         )
       ],
     );
-    return Container(
-      child: rowWeeks,
-    );
+    return rowWeeks;
   }
 }
