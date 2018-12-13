@@ -35,6 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: new Column(
         children: <Widget>[
           G2xSimpleWeekCalendar(DateTime.now(),
+            format: "dd/MM/yyyy",
+            strWeekDays: ["Dom","Seg","Ter","Qua","Qui","Sex","Sab"],
             backgroundDecoration: new BoxDecoration(color: Colors.black),
             defaultTextStyle: new TextStyle(color: Colors.white),
             selectedTextStyle: new TextStyle(color: Colors.black, fontSize: 16),

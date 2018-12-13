@@ -8,8 +8,8 @@ class G2xSimpleWeekCalendar extends StatefulWidget {
   G2xSimpleWeekCalendar(
     this.currentDate,
     {
-      this.strWeekDays = const ["Dom","Seg","Ter","Qua","Qui","Sex","Sab"],
-      this.format = "dd/MM/yyyy",this.dateCallback,
+      this.strWeekDays = const ["Sun","Mon","Tues","Wed","Thurs","Fri","Sat"],
+      this.format = "yyyy/MM/dd",this.dateCallback,
       this.defaultTextStyle =  const TextStyle(),
       this.selectedTextStyle = const TextStyle(color: Colors.red),
       this.selectedBackgroundDecoration = const BoxDecoration(),
@@ -55,6 +55,8 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
     void initState() {
       super.initState();
       currentDate = widget.currentDate;
+      if(widget.dateCallback != null)
+        widget.dateCallback(currentDate);
       selectedIndex = currentDate.weekday == 7 ? 0 : currentDate.weekday;
     }
 
