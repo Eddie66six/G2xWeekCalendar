@@ -16,7 +16,7 @@ class G2xSimpleWeekCalendar extends StatefulWidget {
       this.backgroundDecoration = const BoxDecoration()
     }
   );
-  DateTime currentDate;
+  final DateTime currentDate;
   final List<String> strWeekDays;
   final String format;
   final DateCallback dateCallback;
@@ -30,35 +30,37 @@ class G2xSimpleWeekCalendar extends StatefulWidget {
 }
 
 class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
+  DateTime currentDate;
   var weekDays = <int>[];
   var selectedIndex = 0;
 
   _setSelectedDate(int index){
     setState(() {
       selectedIndex = index;
-      widget.currentDate = MyDateTime.getFirstDateOfWeek(widget.currentDate).add(new Duration(days: index));
+      currentDate = MyDateTime.getFirstDateOfWeek(currentDate).add(new Duration(days: index));
       if(widget.dateCallback != null)
-        widget.dateCallback(widget.currentDate);
+        widget.dateCallback(currentDate);
     });
   }
 
   _altertWeek(int days){
     setState(() {
-      widget.currentDate = widget.currentDate.add(new Duration(days: days));
+      currentDate = widget.currentDate.add(new Duration(days: days));
       if(widget.dateCallback != null)
-        widget.dateCallback(widget.currentDate);
+        widget.dateCallback(currentDate);
     });
   }
 
   @override
     void initState() {
       super.initState();
-      selectedIndex = widget.currentDate.weekday == 7 ? 0 : widget.currentDate.weekday;
+      currentDate = widget.currentDate;
+      selectedIndex = currentDate.weekday == 7 ? 0 : currentDate.weekday;
     }
 
   @override
   Widget build(BuildContext context) {
-    weekDays = MyDateTime.getDaysOfWeek(widget.currentDate);
+    weekDays = MyDateTime.getDaysOfWeek(currentDate);
     var rowWeeks = new Column(
       children: <Widget>[
         new Row(
@@ -68,7 +70,7 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
               onTap: ()=> _altertWeek(-7),
               child: new Icon(Icons.arrow_left, color: widget.defaultTextStyle.color),
             ),
-            new Text(MyDateTime.formatDate(widget.currentDate,format: widget.format),
+            new Text(MyDateTime.formatDate(currentDate,format: widget.format),
               style: widget.defaultTextStyle),
             new InkWell(
               onTap: ()=> _altertWeek(7),
