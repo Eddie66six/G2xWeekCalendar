@@ -34,7 +34,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: new Column(
         children: <Widget>[
-          G2xSimpleWeekCalendar(DateTime.now())
+          G2xSimpleWeekCalendar(DateTime.now(),
+            backgroundDecoration: new BoxDecoration(color: Colors.black),
+            defaultTextStyle: new TextStyle(color: Colors.white),
+            selectedTextStyle: new TextStyle(color: Colors.black, fontSize: 16),
+            selectedBackgroundDecoration: new BoxDecoration(color: Colors.white,
+              borderRadius: new BorderRadius.circular(5)),
+          )
         ],
       )
     );

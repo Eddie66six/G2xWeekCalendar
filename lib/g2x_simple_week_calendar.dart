@@ -7,13 +7,24 @@ typedef void DateCallback(DateTime val);
 class G2xSimpleWeekCalendar extends StatefulWidget {
   G2xSimpleWeekCalendar(
     this.currentDate,
-    {this.strWeekDays = const ["Dom","Seg","Ter","Qua","Qui","Sex","Sab"],
-    this.format = "dd/MM/yyyy",this.dateCallback}
+    {
+      this.strWeekDays = const ["Dom","Seg","Ter","Qua","Qui","Sex","Sab"],
+      this.format = "dd/MM/yyyy",this.dateCallback,
+      this.defaultTextStyle =  const TextStyle(),
+      this.selectedTextStyle = const TextStyle(color: Colors.red),
+      this.selectedBackgroundDecoration = const BoxDecoration(),
+      this.backgroundDecoration = const BoxDecoration()
+    }
   );
   DateTime currentDate;
   final List<String> strWeekDays;
   final String format;
   final DateCallback dateCallback;
+  //style
+  final TextStyle defaultTextStyle;
+  final TextStyle selectedTextStyle;
+  final BoxDecoration selectedBackgroundDecoration;
+  final BoxDecoration backgroundDecoration;
   @override
   _G2xSimpleWeekCalendarState createState() => _G2xSimpleWeekCalendarState();
 }
@@ -48,15 +59,6 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
   @override
   Widget build(BuildContext context) {
     weekDays = MyDateTime.getDaysOfWeek(widget.currentDate);
-
-    var defaultTextStyle = new TextStyle(
-
-    );
-
-    var selectedTextStyle = new TextStyle(
-      color: Colors.red
-    );
-
     var rowWeeks = new Column(
       children: <Widget>[
         new Row(
@@ -64,12 +66,13 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
           children: <Widget>[
             new InkWell(
               onTap: ()=> _altertWeek(-7),
-              child: new Icon(Icons.arrow_left),
+              child: new Icon(Icons.arrow_left, color: widget.defaultTextStyle.color),
             ),
-            new Text(MyDateTime.formatDate(widget.currentDate,format: widget.format)),
+            new Text(MyDateTime.formatDate(widget.currentDate,format: widget.format),
+              style: widget.defaultTextStyle),
             new InkWell(
               onTap: ()=> _altertWeek(7),
-              child: new Icon(Icons.arrow_right),
+              child: new Icon(Icons.arrow_right, color: widget.defaultTextStyle.color),
             ),
           ],
         ),
@@ -79,19 +82,30 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
             return new InkWell(
               
               onTap: ()=> _setSelectedDate(widget.strWeekDays.indexOf(i)),
-              child: new Column(
-                children: <Widget>[
-                  new Text(i,
-                    style: selectedIndex == widget.strWeekDays.indexOf(i) ? selectedTextStyle : defaultTextStyle),
-                  new Text(weekDays[widget.strWeekDays.indexOf(i)].toString(),
-                    style: selectedIndex == widget.strWeekDays.indexOf(i) ? selectedTextStyle : defaultTextStyle)
-                ],
-              ),
+              child: new Container(
+                padding: new EdgeInsets.all(5),
+                decoration: selectedIndex == widget.strWeekDays.indexOf(i) ?
+                  widget.selectedBackgroundDecoration : new BoxDecoration(),
+                child: new Column(
+                  children: <Widget>[
+                    new Text(i,
+                      style: selectedIndex == widget.strWeekDays.indexOf(i) ?
+                        widget.selectedTextStyle : widget.defaultTextStyle),
+                    new Text(weekDays[widget.strWeekDays.indexOf(i)].toString(),
+                      style: selectedIndex == widget.strWeekDays.indexOf(i) ?
+                        widget.selectedTextStyle : widget.defaultTextStyle)
+                  ],
+                ),
+              )
             );
           }).toList()
         )
       ],
     );
-    return rowWeeks;
+    return new Container(
+      padding: new EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
+      decoration: widget.backgroundDecoration,
+      child: rowWeeks,
+    );
   }
 }
