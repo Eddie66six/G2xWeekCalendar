@@ -1,8 +1,8 @@
 name: g2x_week_calendar
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
+author: Eddie66six <jogos.coisas@gmail.com>
+homepage: https://github.com/Eddie66six
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"

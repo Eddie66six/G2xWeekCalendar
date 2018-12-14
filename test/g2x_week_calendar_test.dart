@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:g2x_week_calendar/Util.dart';
+import 'package:g2x_week_calendar/util.dart';
 import 'package:g2x_week_calendar/g2x_simple_week_calendar.dart';
 
 void main() {
