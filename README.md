@@ -2,4 +2,4 @@
 
 A new Flutter package project.
 
-<br/><img src="example/g2x_week_calendar_example.PNG"/>
+<img src="https://raw.githubusercontent.com/Eddie66six/G2xWeekCalendar/master/example/g2x_week_calendar_example.PNG"/>
