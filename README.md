@@ -1,6 +1,9 @@
-# g2x_week_calendar
+# g2x week calendar
 
 Customizable week calendar
+
+## image
+<img src="https://raw.githubusercontent.com/Eddie66six/G2xWeekCalendar/master/example/g2x_week_calendar_example.PNG"/>
 
 ## G2xSimpleWeekCalendar customizable
 
@@ -34,4 +37,5 @@ Customizable week calendar
         type: BoxDecoration
         default value flutter
 
-<img src="https://raw.githubusercontent.com/Eddie66six/G2xWeekCalendar/master/example/g2x_week_calendar_example.PNG"/>
+### MyDateTime
+    class that contains the methods used on component
