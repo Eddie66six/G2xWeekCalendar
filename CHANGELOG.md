@@ -1,15 +1,11 @@
 ## [0.0.1] - TODO: Add release date.
 
-* TODO: Describe initial release.
+* Create component.
 
-## [0.0.2] - TODO: Add release date.
+## [0.0.2]..[0.0.9] - Documentation.
 
-* TODO: documentation update.
+* Created and updated documentation.
 
-## [0.0.3] - TODO: Add release date.
+## [0.1.0] - publication for use.
 
-* TODO: documentation update.
-
-## [0.0.4] - TODO: Add release date.
-
-* TODO: documentation update.
+* Update to stable and documented version.
