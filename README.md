@@ -2,4 +2,4 @@
 
 A new Flutter package project.
 
-![Alt text](relative/example/to/example.png?raw=true " ")
+![Alt text](relative/example/example.png?raw=true " ")
