@@ -6,6 +6,7 @@ typedef void DateCallback(DateTime val);
 
 class G2xSimpleWeekCalendar extends StatefulWidget {
   G2xSimpleWeekCalendar(
+    this.bodyHeight,
     this.currentDate,
     {
       this.strWeekDays = const ["Sun","Mon","Tues","Wed","Thurs","Fri","Sat"],
@@ -13,7 +14,8 @@ class G2xSimpleWeekCalendar extends StatefulWidget {
       this.defaultTextStyle =  const TextStyle(),
       this.selectedTextStyle = const TextStyle(color: Colors.red),
       this.selectedBackgroundDecoration = const BoxDecoration(),
-      this.backgroundDecoration = const BoxDecoration()
+      this.backgroundDecoration = const BoxDecoration(),
+      this.typeCollapse = false,
     }
   );
   final DateTime currentDate;
@@ -25,14 +27,22 @@ class G2xSimpleWeekCalendar extends StatefulWidget {
   final TextStyle selectedTextStyle;
   final BoxDecoration selectedBackgroundDecoration;
   final BoxDecoration backgroundDecoration;
+  final bool typeCollapse;
+  final double bodyHeight;
   @override
   _G2xSimpleWeekCalendarState createState() => _G2xSimpleWeekCalendarState();
 }
 
-class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
+class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with TickerProviderStateMixin{
   DateTime currentDate;
   var weekDays = <int>[];
   var selectedIndex = 0;
+  var _close = false;
+
+  //Collapse
+  AnimationController _collapseController;
+  Animation<double> _collpseAnimation;
+  var _heightCollapse = 0.0;
 
   _setSelectedDate(int index){
     setState(() {
@@ -51,6 +61,17 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
     });
   }
 
+  _collapse(){
+    if(_collapseController.status == AnimationStatus.completed && _close){
+      _collapseController.reverse();
+      _close = false;
+    }
+    else if(_collapseController.status == AnimationStatus.dismissed){
+      _collapseController.forward();
+      _close = true;
+    }
+  }
+
   @override
     void initState() {
       super.initState();
@@ -58,6 +79,20 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
       if(widget.dateCallback != null)
         widget.dateCallback(currentDate);
       selectedIndex = currentDate.weekday == 7 ? 0 : currentDate.weekday;
+
+      //Collapse
+      _heightCollapse = widget.bodyHeight;
+      _collapseController = new AnimationController(vsync: this, duration: new Duration(milliseconds: 500));
+      _collpseAnimation = new Tween<double>(begin: widget.bodyHeight, end: 0).animate(_collapseController);
+      _collapseController.addListener((){
+        setState(() {
+          _heightCollapse = _collpseAnimation.value;
+        });
+        if(_collapseController.status == AnimationStatus.completed && !_close){
+          _collapseController.reset();
+          _close = false;
+        }
+      });
     }
 
   @override
@@ -78,31 +113,37 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> {
               onTap: ()=> _altertWeek(7),
               child: new Icon(Icons.arrow_right, color: widget.defaultTextStyle.color),
             ),
-          ],
+            widget.typeCollapse ? new InkWell(
+              onTap: ()=> _collapse(),
+              child: new Icon(Icons.arrow_drop_down),
+            ) : new Container()
+          ]
         ),
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: widget.strWeekDays.map((i){
-            return new InkWell(
-              
-              onTap: ()=> _setSelectedDate(widget.strWeekDays.indexOf(i)),
-              child: new Container(
-                padding: new EdgeInsets.all(5),
-                decoration: selectedIndex == widget.strWeekDays.indexOf(i) ?
-                  widget.selectedBackgroundDecoration : new BoxDecoration(),
-                child: new Column(
-                  children: <Widget>[
-                    new Text(i,
-                      style: selectedIndex == widget.strWeekDays.indexOf(i) ?
-                        widget.selectedTextStyle : widget.defaultTextStyle),
-                    new Text(weekDays[widget.strWeekDays.indexOf(i)].toString(),
-                      style: selectedIndex == widget.strWeekDays.indexOf(i) ?
-                        widget.selectedTextStyle : widget.defaultTextStyle)
-                  ],
-                ),
-              )
-            );
-          }).toList()
+        new Container(
+          height: _heightCollapse,
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: widget.strWeekDays.map((i){
+              return new InkWell(
+                onTap: ()=> _setSelectedDate(widget.strWeekDays.indexOf(i)),
+                child: new Container(
+                  padding: new EdgeInsets.all(5),
+                  decoration: selectedIndex == widget.strWeekDays.indexOf(i) ?
+                    widget.selectedBackgroundDecoration : new BoxDecoration(),
+                  child: new Column(
+                    children: <Widget>[
+                      new Text(i,
+                        style: selectedIndex == widget.strWeekDays.indexOf(i) ?
+                          widget.selectedTextStyle : widget.defaultTextStyle),
+                      new Text(weekDays[widget.strWeekDays.indexOf(i)].toString(),
+                        style: selectedIndex == widget.strWeekDays.indexOf(i) ?
+                          widget.selectedTextStyle : widget.defaultTextStyle)
+                    ],
+                  ),
+                )
+              );
+            }).toList()
+          )
         )
       ],
     );

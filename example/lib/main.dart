@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
        */
-      body: G2xSimpleWeekCalendar(DateTime.now(), dateCallback: (date) => dateCallback)
+      body: G2xSimpleWeekCalendar(100.0, DateTime.now(), dateCallback: (date) => dateCallback, typeCollapse: true)
     );
   }
 }
