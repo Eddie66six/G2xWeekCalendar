@@ -1,8 +1,8 @@
 ///class that contains the methods used to date
 class MyDateTime {
   static String formatDate(DateTime date, {String format = "dd/MM/yyyy"}) {
-    var str = format.replaceAll("dd", date.day.toString());
-    str = str.replaceAll("MM", date.month.toString());
+    var str = format.replaceAll("dd", (date.day < 10 ? "0" : "") + date.day.toString());
+    str = str.replaceAll("MM", (date.month < 10 ? "0" : "") + date.month.toString());
     str = str.replaceAll("yyyy", date.year.toString());
     return str;
   }

@@ -55,13 +55,14 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with Tick
 
   _altertWeek(int days){
     setState(() {
-      currentDate = widget.currentDate.add(new Duration(days: days));
+      currentDate = currentDate.add(new Duration(days: days));
       if(widget.dateCallback != null)
         widget.dateCallback(currentDate);
     });
   }
 
   _collapse(){
+    if(!widget.typeCollapse) return;
     if(_collapseController.status == AnimationStatus.completed && _close){
       _collapseController.reverse();
       _close = false;
@@ -98,29 +99,54 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with Tick
   @override
   Widget build(BuildContext context) {
     weekDays = MyDateTime.getDaysOfWeek(currentDate);
+    var size = MediaQuery.of(context).size;
     var rowWeeks = new Column(
       children: <Widget>[
-        new Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new InkWell(
-              onTap: ()=> _altertWeek(-7),
-              child: new Icon(Icons.arrow_left, color: widget.defaultTextStyle.color),
-            ),
-            new Text(MyDateTime.formatDate(currentDate,format: widget.format),
-              style: widget.defaultTextStyle),
-            new InkWell(
-              onTap: ()=> _altertWeek(7),
-              child: new Icon(Icons.arrow_right, color: widget.defaultTextStyle.color),
-            ),
-            widget.typeCollapse ? new InkWell(
-              onTap: ()=> _collapse(),
-              child: new Icon(Icons.arrow_drop_down),
-            ) : new Container()
-          ]
+        new Container(
+          decoration: widget.backgroundDecoration,
+          padding: new EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
+          child: new Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              new InkWell(
+                onTap: ()=> _collapse(),
+                child: new Container(
+                  width: size.width/3 -3.3,
+                  child: new Text(""),
+                )
+              ),
+              new Container(
+                width: size.width/3 -3.4,
+                child: new Row(
+                  children: <Widget>[
+                    new InkWell(
+                      onTap: ()=> _altertWeek(-7),
+                      child: new Icon(Icons.arrow_left, color: widget.defaultTextStyle.color),
+                    ),
+                    new Text(MyDateTime.formatDate(currentDate,format: widget.format),
+                      style: widget.defaultTextStyle),
+                    new InkWell(
+                      onTap: ()=> _altertWeek(7),
+                      child: new Icon(Icons.arrow_right, color: widget.defaultTextStyle.color),
+                    )
+                  ],
+                )
+              ),
+              new InkWell(
+                onTap: ()=> _collapse(),
+                child: new Container(
+                  alignment: Alignment.centerRight,
+                  width: size.width/3 -3.3,
+                  child: widget.typeCollapse ? new Icon(_close ? Icons.arrow_drop_up : Icons.arrow_drop_down) : null,
+                ),
+              )
+            ]
+          )
         ),
         new Container(
           height: _heightCollapse,
+          decoration: widget.backgroundDecoration,
+          padding: new EdgeInsets.only(bottom: 5, left: 5, right: 5),
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: widget.strWeekDays.map((i){
@@ -147,10 +173,6 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with Tick
         )
       ],
     );
-    return new Container(
-      padding: new EdgeInsets.only(top: 10, bottom: 10, left: 5, right: 5),
-      decoration: widget.backgroundDecoration,
-      child: rowWeeks,
-    );
+    return rowWeeks;
   }
 }

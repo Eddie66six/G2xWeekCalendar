@@ -24,13 +24,13 @@ void main() {
 
   //widget
   testWidgets("simpleWeekCalendar", (WidgetTester t) async {
-    await t.pumpWidget(new MaterialApp(home: new Scaffold(body: G2xSimpleWeekCalendar(DateTime.now()))));
+    await t.pumpWidget(new MaterialApp(home: new Scaffold(body: G2xSimpleWeekCalendar(100, DateTime.now()))));
   });
   testWidgets("simpleWeekCalendar callback date", (WidgetTester t) async {
     DateTime date;
     DateTime dateTimeNow = DateTime.now();
     await t.pumpWidget(new MaterialApp(
-      home: new Scaffold(body: G2xSimpleWeekCalendar(dateTimeNow, dateCallback: (val)=> date = val))));
+      home: new Scaffold(body: G2xSimpleWeekCalendar(100, dateTimeNow, dateCallback: (val)=> date = val))));
     expect(date, dateTimeNow);
   });
 }
