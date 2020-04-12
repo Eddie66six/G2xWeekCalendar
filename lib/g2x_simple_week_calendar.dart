@@ -1,6 +1,7 @@
 library g2x_week_calendar;
 import 'package:flutter/material.dart';
-import 'package:g2x_week_calendar/util.dart';
+
+import 'Util.dart';
 
 typedef void DateCallback(DateTime val);
 
