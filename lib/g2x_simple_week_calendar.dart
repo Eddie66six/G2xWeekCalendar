@@ -78,8 +78,8 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with Tick
     void initState() {
       super.initState();
       currentDate = widget.currentDate;
-      if(widget.dateCallback != null)
-        widget.dateCallback(currentDate);
+      // if(widget.dateCallback != null)
+      //   widget.dateCallback(currentDate);
       selectedIndex = currentDate.weekday == 7 ? 0 : currentDate.weekday;
 
       //Collapse

@@ -1,6 +1,6 @@
 name: g2x_week_calendar
 description: g2x_week_calendar is a component to control the date in the week with customizable style.
-version: 0.1.6
+version: 0.1.7
 homepage: https://github.com/Eddie66six
 
 environment:

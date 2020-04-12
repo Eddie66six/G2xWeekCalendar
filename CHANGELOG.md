@@ -1,3 +1,7 @@
+## [0.1.7] - Bug fix.
+* Bug fix
+* Removed the initial callback
+
 ## [0.1.6] - Layout fix.
 * Layout fix
 

@@ -28,6 +28,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   //data returned from the component
   DateTime dateCallback;
+
+  _dateCallback(DateTime date){
+    dateCallback = date;
+    print(dateCallback);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
        */
-      body: G2xSimpleWeekCalendar(50.0, DateTime.now(), dateCallback: (date) => dateCallback, typeCollapse: true,
+      body: G2xSimpleWeekCalendar(50.0, DateTime.now(), dateCallback: (date) => _dateCallback(date), typeCollapse: true,
       backgroundDecoration: new BoxDecoration(color: Colors.blue),)
     );
   }
