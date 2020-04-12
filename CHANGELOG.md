@@ -1,3 +1,6 @@
+## [0.1.6] - Layout fix.
+* Layout fix
+
 ## [0.1.5] - Bug fix.
 * Bug fix
 

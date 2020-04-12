@@ -101,6 +101,7 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with Tick
   Widget build(BuildContext context) {
     weekDays = MyDateTime.getDaysOfWeek(currentDate);
     var size = MediaQuery.of(context).size;
+    var sizePart = size.width/4-10;
     var rowWeeks = new Column(
       children: <Widget>[
         new Container(
@@ -112,13 +113,14 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with Tick
               new InkWell(
                 onTap: ()=> _collapse(),
                 child: new Container(
-                  width: size.width/3 -3.3,
+                  width: sizePart,
                   child: new Text(""),
                 )
               ),
               new Container(
-                width: size.width/3 -3.4,
+                width: sizePart * 2,
                 child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new InkWell(
                       onTap: ()=> _altertWeek(-7),
@@ -137,7 +139,7 @@ class _G2xSimpleWeekCalendarState extends State<G2xSimpleWeekCalendar> with Tick
                 onTap: ()=> _collapse(),
                 child: new Container(
                   alignment: Alignment.centerRight,
-                  width: size.width/3 -3.3,
+                  width: sizePart,
                   child: widget.typeCollapse ? new Icon(_close ? Icons.arrow_drop_up : Icons.arrow_drop_down) : null,
                 ),
               )
